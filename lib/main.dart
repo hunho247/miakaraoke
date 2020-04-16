@@ -1,55 +1,19 @@
-import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
-import 'screens/MainScreen.dart';
-import 'models/ThemeModel.dart';
-import 'models/KaraokeLibraryModel.dart';
-import 'models/BookmarkModel.dart';
-import 'models/RecordingModel.dart';
+import 'package:flutter/services.dart';
+import 'package:miakaraoke/utils/definition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main(List<String> args) {
-  runApp(MultiProvider(providers: [
-    ChangeNotifierProvider<BookmarkModel>(
-      create: (context) => BookmarkModel(),
-    ),
-    ChangeNotifierProvider<KaraokeLibraryModel>(
-      create: (context) => KaraokeLibraryModel(),
-    ),
-    ChangeNotifierProvider<RecordingModel>(
-      create: (context) => RecordingModel(),
-    ),
-    ChangeNotifierProvider<ThemeChanger>(
-      create: (context) => ThemeChanger(),
-    ),
-  ], child: MyApp()));
-}
+import 'global_bloc/global_page.dart';
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
 
-class _MyAppState extends State<MyApp> {
-  @override
-  Widget build(BuildContext context) {
-    ThemeChanger theme = Provider.of<ThemeChanger>(context);
-    return new MaterialApp(
-      home: new Splash(),
-      theme: theme.getTheme(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
-}
+  //* Forcing only portrait orientation
+  SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-class Splash extends StatefulWidget {
-  @override
-  SplashState createState() => new SplashState();
-}
+  // * Get Shared Preference Instance for whole app
+  Definitions.prefs = await SharedPreferences.getInstance();
 
-class SplashState extends State<Splash> {
-  @override
-  Widget build(BuildContext context) {
-    return new Scaffold(
-      body: new MainScreen(),
-    );
-  }
+  runApp(GlobalPage());
 }

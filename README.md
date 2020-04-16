@@ -1,6 +1,6 @@
 # miakaraoke
 
-Karaoke application
+A karaoke app
 
 ## Getting Started
 
