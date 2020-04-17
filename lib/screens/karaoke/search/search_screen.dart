@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miakaraoke/model/youtube/video_model.dart';
+import 'package:miakaraoke/model/youtube/search_model.dart';
 import 'package:miakaraoke/screens/karaoke/youtube/youtube_screen.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
 
@@ -89,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen> {
     return false;
   }
 
-  Widget _buildVideoListItem(VideoItem videoItem) {
+  Widget _buildVideoListItem(SearchItem videoItem) {
     return GestureDetector(
       child: _buildVideoListItemCard(videoItem.snippet),
       onTap: () {
@@ -103,7 +103,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildVideoListItemCard(VideoSnippet videoSnippet) {
+  Widget _buildVideoListItemCard(SearchSnippet videoSnippet) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(10.0),

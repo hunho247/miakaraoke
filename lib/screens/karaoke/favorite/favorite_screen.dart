@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miakaraoke/model/youtube/video_model.dart';
+import 'package:miakaraoke/model/youtube/search_model.dart';
 import 'package:miakaraoke/screens/karaoke/youtube/youtube_screen.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
 
@@ -72,14 +72,14 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     return false;
   }
 
-  Widget _buildVideoListVideoItem(VideoItem favoriteVideoItem) {
+  Widget _buildVideoListVideoItem(SearchItem searchItem) {
     return GestureDetector(
-      child: _buildVideoListVideoItemCard(favoriteVideoItem.videoSnippet),
+      child: _buildVideoListVideoItemCard(searchItem.snippet),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
-            return YoutubeScreen(favoriteVideoItem.id.videoId);
+            return YoutubeScreen(searchItem.id.videoId);
           }),
         );
       },

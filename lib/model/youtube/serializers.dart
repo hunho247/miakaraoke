@@ -3,15 +3,15 @@ import 'package:built_value/serializer.dart';
 import 'package:built_value/standard_json_plugin.dart';
 
 import 'common_model.dart';
-import 'video_model.dart';
+import 'search_model.dart';
 
 part 'serializers.g.dart';
 
 @SerializersFor(const [
-  VideoSearchResult,
-  VideoItem,
-  VideoId,
-  VideoSnippet,
+  YoutubeSearchResult,
+  SearchItem,
+  Id,
+  SearchSnippet,
   Thumbnails,
   Thumbnail,
 ])

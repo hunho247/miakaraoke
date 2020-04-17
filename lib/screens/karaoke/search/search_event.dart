@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:meta/meta.dart';
-import 'package:miakaraoke/model/youtube/video_model.dart';
+import 'package:miakaraoke/model/youtube/search_model.dart';
 
 import 'search_bloc.dart';
 import 'search_provider.dart';

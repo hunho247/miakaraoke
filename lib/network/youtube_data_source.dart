@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:miakaraoke/model/youtube/video_model.dart';
+import 'package:miakaraoke/model/youtube/search_model.dart';
 
 import 'api_key.dart';
 
@@ -16,7 +16,7 @@ class YoutubeDataSource {
 
   YoutubeDataSource(this.client);
 
-  Future<VideoSearchResult> searchVideos({
+  Future<YoutubeSearchResult> searchVideos({
     String query,
     String pageToken = '',
   }) async {
@@ -28,7 +28,7 @@ class YoutubeDataSource {
     final response = await client.get(urlEncoded);
 
     if (response.statusCode == 200) {
-      return VideoSearchResult.fromJson(response.body);
+      return YoutubeSearchResult.fromJson(response.body);
     } else {
       throw YoutubeSearchError(json.decode(response.body)['error']['message']);
     }
