@@ -11,6 +11,9 @@ class FavoriteProvider {
   }
 
   static Future<void> postFavKaraoke(Favorite favorite) async {
-    _ins.collection(_path).document().setData(favorite.toJson());
+    _ins
+        .collection(_path)
+        .document(favorite.videoId)
+        .setData(favorite.toJson());
   }
 }

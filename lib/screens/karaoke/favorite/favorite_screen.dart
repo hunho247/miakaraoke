@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miakaraoke/model/youtube/search_model.dart';
-import 'package:miakaraoke/screens/karaoke/youtube/youtube_screen.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
 
 import 'favorite_bloc.dart';
@@ -22,6 +20,12 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
   final _scrollController = ScrollController();
 
   @override
+  void initState() {
+    FavoriteBloc().add(FetchingFavoriteEvent());
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return _buildScaffold();
   }
@@ -33,107 +37,106 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
         builder: (context, FavoriteState state) {
           if (state is InitialFavoriteState) {
             return CenteredMessage(
-              message: 'Favorite List',
+              message: 'Loading Favorite',
               icon: Icons.favorite_border,
             );
           }
 
-          return _buildResultList(state);
+          if (state is SuccessFavoriteState) {
+            return _buildResultList(state.snapshot);
+          }
+
+          return CenteredMessage(
+            message: 'Error!',
+            icon: Icons.error_outline,
+          );
         },
       ),
     );
   }
 
-  Widget _buildResultList(var state) {
-    return NotificationListener<ScrollNotification>(
-      child: ListView.builder(
-        itemCount: state.favoriteResults.length,
-        controller: _scrollController,
-        itemBuilder: (context, index) {
-          return _buildVideoListVideoItem(state.favoriteResults[index]);
-        },
-      ),
-    );
-  }
-
-  int _calculateListVideoItemCount(var state) {
-    if (state.hasReachedEndOfResults) {
-      return state.favoriteResults.length;
-    } else {
-      return state.favoriteResults.length + 1;
-    }
-  }
-
-  bool _handleScrollNotification(ScrollNotification notification) {
-    if (notification is ScrollEndNotification &&
-        _scrollController.position.extentAfter == 0) {
-      FavoriteBloc().add(FetchingFavoriteEvent());
-    }
-    return false;
-  }
-
-  Widget _buildVideoListVideoItem(SearchItem searchItem) {
-    return GestureDetector(
-      child: _buildVideoListVideoItemCard(searchItem.snippet),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (_) {
-            return YoutubeScreen(searchItem.id.videoId);
-          }),
-        );
+  Widget _buildResultList(var snapshot) {
+    return StreamBuilder(
+      stream: snapshot,
+      builder: (context, snapshots) {
+        if (!snapshots.hasData) {
+          return CenteredMessage(
+            message: 'No Favorate',
+            icon: Icons.favorite_border,
+          );
+        } else {
+          return ListView.builder(
+            itemCount: snapshots.data.documents.length,
+            controller: _scrollController,
+            itemBuilder: (context, index) {
+              return _buildVideoListVideoItem(snapshots.data.documents[index]);
+            },
+          );
+        }
       },
     );
   }
 
-  Widget _buildVideoListVideoItemCard(var videoVideoSnippet) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxHeight: 200.0),
-                child: CachedNetworkImage(
+  Widget _buildVideoListVideoItem(var item) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(20),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(maxHeight: 100.0),
+        child: Card(
+          child: InkWell(
+            onTap: () {
+              print("Card Clicked");
+            },
+            onLongPress: () {},
+            child: Row(
+              children: <Widget>[
+                CachedNetworkImage(
                   fit: BoxFit.cover,
-                  imageUrl: videoVideoSnippet.thumbnails.high.url,
+                  imageUrl: item.data['thumbnail'] ?? '',
                   placeholder: (context, url) => Container(),
                 ),
-              ),
-            ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.only(top: 10, left: 0, right: 10),
-                  child: Text(
-                    videoVideoSnippet.title,
-                    style: Theme.of(context).textTheme.title.copyWith(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: <Widget>[
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(top: 5, left: 5, right: 5),
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          text: TextSpan(
+                            style: Theme.of(context).textTheme.title.copyWith(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                            text: item.data['title'] ?? '',
+                          ),
                         ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(top: 8, left: 0, right: 10),
-                  child: Text(
-                    videoVideoSnippet.description,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            top: 5, left: 5, right: 5, bottom: 5),
+                        child: RichText(
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 3,
+                          text: TextSpan(
+                            style: Theme.of(context)
+                                .textTheme
+                                .body1
+                                .copyWith(fontSize: 10),
+                            text: item.data['description'] ?? '',
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
             ),
-          ],
+          ),
         ),
       ),
-    );
-  }
-
-  Widget _buildLoaderListVideoItem() {
-    return Center(
-      child: CircularProgressIndicator(),
     );
   }
 }

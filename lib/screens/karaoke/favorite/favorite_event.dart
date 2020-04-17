@@ -27,7 +27,15 @@ class InitialFavoriteEvent extends FavoriteEvent {
 class FetchingFavoriteEvent extends FavoriteEvent {
   @override
   Stream<FavoriteState> applyAsync(
-      {FavoriteState currentState, FavoriteBloc bloc}) async* {}
+      {FavoriteState currentState, FavoriteBloc bloc}) async* {
+    try {
+      var data = FavoriteProvider.getFavKaraokeList();
+      yield SuccessFavoriteState(snapshot: data);
+    } catch (_, stackTrace) {
+      print('$_ $stackTrace');
+      yield FailureFavoriteState(_?.toString());
+    }
+  }
 }
 
 class PostingFavoriteEvent extends FavoriteEvent {
@@ -38,7 +46,12 @@ class PostingFavoriteEvent extends FavoriteEvent {
   @override
   Stream<FavoriteState> applyAsync(
       {FavoriteState currentState, FavoriteBloc bloc}) async* {
-    await FavoriteProvider.postFavKaraoke(favorite);
-    yield currentState;
+    try {
+      await FavoriteProvider.postFavKaraoke(favorite);
+      yield currentState;
+    } catch (_, stackTrace) {
+      print('$_ $stackTrace');
+      yield FailureFavoriteState(_?.toString());
+    }
   }
 }

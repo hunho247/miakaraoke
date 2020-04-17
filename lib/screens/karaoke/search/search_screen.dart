@@ -96,7 +96,7 @@ class _SearchScreenState extends State<SearchScreen> {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
-            return YoutubeScreen(videoItem.id.videoId);
+            return YoutubeScreen(videoItem);
           }),
         );
       },
