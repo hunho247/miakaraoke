@@ -1,7 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:built_collection/built_collection.dart';
-import 'package:miakaraoke/model/detail_model.dart';
-import 'package:miakaraoke/model/search_model.dart';
+import 'package:miakaraoke/model/youtube/video_model.dart';
 import 'package:miakaraoke/network/youtube_data_source.dart';
 
 class SearchProvider {
@@ -11,14 +10,14 @@ class SearchProvider {
   static String _lastSearchQuery;
   static String _nextPageToken;
 
-  static Future<BuiltList<SearchItem>> searchVideos(String query) async {
+  static Future<BuiltList<VideoItem>> searchVideos(String query) async {
     final searchResult = await _youtubeDataSource.searchVideos(query: query);
     _cacheValues(query: query, nextPageToken: searchResult.nextPageToken);
-    if (searchResult.items.isEmpty) throw NoSearchResultsException();
-    return searchResult.items;
+    if (searchResult.videoItems.isEmpty) throw NoSearchResultsException();
+    return searchResult.videoItems;
   }
 
-  static Future<BuiltList<SearchItem>> fetchNextResultPage() async {
+  static Future<BuiltList<VideoItem>> fetchNextResultPage() async {
     if (_lastSearchQuery == null) {
       throw SearchNotInitiatedException();
     }
@@ -37,13 +36,7 @@ class SearchProvider {
       nextPageToken: nextPageSearchResult.nextPageToken,
     );
 
-    return nextPageSearchResult.items;
-  }
-
-  static Future<VideoItem> fetchVideoInfo({String id}) async {
-    final videoResponse = await _youtubeDataSource.fetchVideoInfo(id: id);
-    if (videoResponse.items.isEmpty) throw NoSuchVideoException();
-    return videoResponse.items[0];
+    return nextPageSearchResult.videoItems;
   }
 
   static void _cacheValues({String query, String nextPageToken}) {

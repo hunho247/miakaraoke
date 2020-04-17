@@ -1,8 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:miakaraoke/model/detail_model.dart';
-import 'package:miakaraoke/model/search_model.dart';
+import 'package:miakaraoke/model/youtube/video_model.dart';
 
 import 'api_key.dart';
 
@@ -15,12 +14,9 @@ class YoutubeDataSource {
       'https://www.googleapis.com/youtube/v3/search?part=snippet' +
           '&maxResults=$MAX_SEARCH_RESULTS&type=video&key=$API_KEY';
 
-  final String _videoBaseUrl =
-      'https://www.googleapis.com/youtube/v3/videos?part=snippet&key=$API_KEY';
-
   YoutubeDataSource(this.client);
 
-  Future<YoutubeSearchResult> searchVideos({
+  Future<VideoSearchResult> searchVideos({
     String query,
     String pageToken = '',
   }) async {
@@ -32,20 +28,9 @@ class YoutubeDataSource {
     final response = await client.get(urlEncoded);
 
     if (response.statusCode == 200) {
-      return YoutubeSearchResult.fromJson(response.body);
+      return VideoSearchResult.fromJson(response.body);
     } else {
       throw YoutubeSearchError(json.decode(response.body)['error']['message']);
-    }
-  }
-
-  Future<YoutubeVideoResponse> fetchVideoInfo({String id}) async {
-    final url = _videoBaseUrl + '&id=$id';
-    final response = await client.get(url);
-
-    if (response.statusCode == 200) {
-      return YoutubeVideoResponse.fromJson(response.body);
-    } else {
-      throw YoutubeVideoError(json.decode(response.body)['error']['message']);
     }
   }
 }

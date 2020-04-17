@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1072603768658",
+    "firebase_url": "https://mia-karaoke.firebaseio.com",
+    "project_id": "mia-karaoke",
+    "storage_bucket": "mia-karaoke.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1072603768658:android:2d170bffe2438c8dc17c8b",
+        "android_client_info": {
+          "package_name": "com.varmyapp.miakaraoke"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1072603768658-a12lcb7c4n1c7eg2hnle7jq0dunrclk7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.varmyapp.miakaraoke",
+            "certificate_hash": "3615784b41c66b5fc3693daf3ab731b047c018a9"
+          }
+        },
+        {
+          "client_id": "1072603768658-5a9lqdjvg3m00at2be88jnp5bgsf8qv1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMfwytRWq7l17dYqgMfSu0vtYxQrm1c0U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1072603768658-5a9lqdjvg3m00at2be88jnp5bgsf8qv1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

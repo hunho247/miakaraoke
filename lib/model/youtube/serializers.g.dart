@@ -7,21 +7,12 @@ part of 'serializers.dart';
 // **************************************************************************
 
 Serializers _$serializers = (new Serializers().toBuilder()
-      ..add(Id.serializer)
-      ..add(SearchItem.serializer)
-      ..add(SearchSnippet.serializer)
       ..add(Thumbnail.serializer)
       ..add(Thumbnails.serializer)
+      ..add(VideoId.serializer)
       ..add(VideoItem.serializer)
+      ..add(VideoSearchResult.serializer)
       ..add(VideoSnippet.serializer)
-      ..add(YoutubeSearchResult.serializer)
-      ..add(YoutubeVideoResponse.serializer)
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(SearchItem)]),
-          () => new ListBuilder<SearchItem>())
-      ..addBuilderFactory(
-          const FullType(BuiltList, const [const FullType(String)]),
-          () => new ListBuilder<String>())
       ..addBuilderFactory(
           const FullType(BuiltList, const [const FullType(VideoItem)]),
           () => new ListBuilder<VideoItem>()))

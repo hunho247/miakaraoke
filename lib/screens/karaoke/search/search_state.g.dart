@@ -10,7 +10,7 @@ class _$SearchState extends SearchState {
   @override
   final bool isLoading;
   @override
-  final BuiltList<SearchItem> searchResults;
+  final BuiltList<VideoItem> searchResults;
   @override
   final String error;
   @override
@@ -83,10 +83,10 @@ class SearchStateBuilder implements Builder<SearchState, SearchStateBuilder> {
   bool get isLoading => _$this._isLoading;
   set isLoading(bool isLoading) => _$this._isLoading = isLoading;
 
-  ListBuilder<SearchItem> _searchResults;
-  ListBuilder<SearchItem> get searchResults =>
-      _$this._searchResults ??= new ListBuilder<SearchItem>();
-  set searchResults(ListBuilder<SearchItem> searchResults) =>
+  ListBuilder<VideoItem> _searchResults;
+  ListBuilder<VideoItem> get searchResults =>
+      _$this._searchResults ??= new ListBuilder<VideoItem>();
+  set searchResults(ListBuilder<VideoItem> searchResults) =>
       _$this._searchResults = searchResults;
 
   String _error;

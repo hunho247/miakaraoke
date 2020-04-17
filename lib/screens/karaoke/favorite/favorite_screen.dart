@@ -5,21 +5,20 @@ import 'package:miakaraoke/model/youtube/video_model.dart';
 import 'package:miakaraoke/screens/karaoke/youtube/youtube_screen.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
 
-import 'search_bloc.dart';
-import 'search_event.dart';
-import 'search_state.dart';
-import 'widget/search_bar.dart';
+import 'favorite_bloc.dart';
+import 'favorite_event.dart';
+import 'favorite_state.dart';
 
-class SearchScreen extends StatefulWidget {
-  const SearchScreen({Key key}) : super(key: key);
+class FavoriteScreen extends StatefulWidget {
+  const FavoriteScreen({Key key}) : super(key: key);
 
   @override
-  _SearchScreenState createState() {
-    return _SearchScreenState();
+  _FavoriteScreenState createState() {
+    return _FavoriteScreenState();
   }
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _FavoriteScreenState extends State<FavoriteScreen> {
   final _scrollController = ScrollController();
 
   @override
@@ -29,33 +28,17 @@ class _SearchScreenState extends State<SearchScreen> {
 
   _buildScaffold() {
     return Scaffold(
-      appBar: AppBar(
-        title: SearchBar(),
-      ),
       body: BlocBuilder(
-        bloc: SearchBloc(),
-        builder: (context, SearchState state) {
-          if (state.isInitial) {
+        bloc: FavoriteBloc(),
+        builder: (context, FavoriteState state) {
+          if (state is InitialFavoriteState) {
             return CenteredMessage(
-              message: 'Start searching!',
-              icon: Icons.ondemand_video,
+              message: 'Favorite List',
+              icon: Icons.favorite_border,
             );
           }
 
-          if (state.isLoading) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-
-          if (state.isSuccessful) {
-            return _buildResultList(state);
-          } else {
-            return CenteredMessage(
-              message: state.error,
-              icon: Icons.error_outline,
-            );
-          }
+          return _buildResultList(state);
         },
       ),
     );
@@ -64,46 +47,46 @@ class _SearchScreenState extends State<SearchScreen> {
   Widget _buildResultList(var state) {
     return NotificationListener<ScrollNotification>(
       child: ListView.builder(
-        itemCount: state.searchResults.length,
+        itemCount: state.favoriteResults.length,
         controller: _scrollController,
         itemBuilder: (context, index) {
-          return _buildVideoListItem(state.searchResults[index]);
+          return _buildVideoListVideoItem(state.favoriteResults[index]);
         },
       ),
     );
   }
 
-  int _calculateListItemCount(var state) {
+  int _calculateListVideoItemCount(var state) {
     if (state.hasReachedEndOfResults) {
-      return state.searchResults.length;
+      return state.favoriteResults.length;
     } else {
-      return state.searchResults.length + 1;
+      return state.favoriteResults.length + 1;
     }
   }
 
   bool _handleScrollNotification(ScrollNotification notification) {
     if (notification is ScrollEndNotification &&
         _scrollController.position.extentAfter == 0) {
-      SearchBloc().add(FetchingSearchEvent());
+      FavoriteBloc().add(FetchingFavoriteEvent());
     }
     return false;
   }
 
-  Widget _buildVideoListItem(VideoItem videoItem) {
+  Widget _buildVideoListVideoItem(VideoItem favoriteVideoItem) {
     return GestureDetector(
-      child: _buildVideoListItemCard(videoItem.snippet),
+      child: _buildVideoListVideoItemCard(favoriteVideoItem.videoSnippet),
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
-            return YoutubeScreen(videoItem.id.videoId);
+            return YoutubeScreen(favoriteVideoItem.id.videoId);
           }),
         );
       },
     );
   }
 
-  Widget _buildVideoListItemCard(VideoSnippet videoSnippet) {
+  Widget _buildVideoListVideoItemCard(var videoVideoSnippet) {
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(10.0),
@@ -116,7 +99,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 constraints: BoxConstraints(maxHeight: 200.0),
                 child: CachedNetworkImage(
                   fit: BoxFit.cover,
-                  imageUrl: videoSnippet.thumbnails.high.url,
+                  imageUrl: videoVideoSnippet.thumbnails.high.url,
                   placeholder: (context, url) => Container(),
                 ),
               ),
@@ -127,7 +110,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 10, left: 0, right: 10),
                   child: Text(
-                    videoSnippet.title,
+                    videoVideoSnippet.title,
                     style: Theme.of(context).textTheme.title.copyWith(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -137,7 +120,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 8, left: 0, right: 10),
                   child: Text(
-                    videoSnippet.description,
+                    videoVideoSnippet.description,
                   ),
                 ),
               ],
@@ -148,7 +131,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Widget _buildLoaderListItem() {
+  Widget _buildLoaderListVideoItem() {
     return Center(
       child: CircularProgressIndicator(),
     );

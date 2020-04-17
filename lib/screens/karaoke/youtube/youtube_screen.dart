@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:miakaraoke/screens/karaoke/search/widget/centered_message.dart';
+import 'package:miakaraoke/widget/centered_message.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'youtube_bloc.dart';
@@ -62,6 +62,11 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
             );
           }
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.navigation),
+        backgroundColor: Colors.green,
       ),
     );
   }

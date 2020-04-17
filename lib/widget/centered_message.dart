@@ -20,12 +20,12 @@ class CenteredMessage extends StatelessWidget {
           children: <Widget>[
             Icon(
               icon,
-              size: 40,
+              size: 50,
             ),
             Text(
               message,
               style: TextStyle(
-                fontSize: 15,
+                fontSize: 18,
                 fontStyle: FontStyle.italic,
                 fontWeight: FontWeight.bold,
               ),

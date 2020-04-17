@@ -4,6 +4,8 @@ import 'package:expanding_bottom_bar/expanding_bottom_bar.dart';
 import 'package:miakaraoke/screens/karaoke/search/search_screen.dart';
 import 'package:miakaraoke/screens/show/show_screen.dart';
 
+import '../screens/karaoke/favorite/favorite_screen.dart';
+
 class MainScreen extends StatefulWidget {
   @override
   _MainScreenState createState() => _MainScreenState();
@@ -37,8 +39,8 @@ class _MainScreenState extends State<MainScreen> {
           children: <Widget>[
             ShowScreen(),
             SearchScreen(),
-            ShowScreen(),
-            ShowScreen(),
+            FavoriteScreen(),
+            FavoriteScreen(),
           ],
         ),
         bottomNavigationBar: ExpandingBottomBar(

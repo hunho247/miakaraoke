@@ -1,41 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of detail_model;
+part of search_model;
 
 // **************************************************************************
 // BuiltValueGenerator
 // **************************************************************************
 
-Serializer<VideoItem> _$videoItemSerializer = new _$VideoItemSerializer();
+Serializer<VideoId> _$videoIdSerializer = new _$VideoIdSerializer();
 Serializer<VideoSnippet> _$videoSnippetSerializer =
     new _$VideoSnippetSerializer();
-Serializer<YoutubeVideoResponse> _$youtubeVideoResponseSerializer =
-    new _$YoutubeVideoResponseSerializer();
+Serializer<VideoItem> _$videoItemSerializer = new _$VideoItemSerializer();
+Serializer<VideoSearchResult> _$videoSearchResultSerializer =
+    new _$VideoSearchResultSerializer();
 
-class _$VideoItemSerializer implements StructuredSerializer<VideoItem> {
+class _$VideoIdSerializer implements StructuredSerializer<VideoId> {
   @override
-  final Iterable<Type> types = const [VideoItem, _$VideoItem];
+  final Iterable<Type> types = const [VideoId, _$VideoId];
   @override
-  final String wireName = 'VideoItem';
+  final String wireName = 'VideoId';
 
   @override
-  Iterable<Object> serialize(Serializers serializers, VideoItem object,
+  Iterable<Object> serialize(Serializers serializers, VideoId object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'id',
-      serializers.serialize(object.id, specifiedType: const FullType(String)),
-      'snippet',
-      serializers.serialize(object.snippet,
-          specifiedType: const FullType(VideoSnippet)),
+      'videoId',
+      serializers.serialize(object.videoId,
+          specifiedType: const FullType(String)),
     ];
 
     return result;
   }
 
   @override
-  VideoItem deserialize(Serializers serializers, Iterable<Object> serialized,
+  VideoId deserialize(Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new VideoItemBuilder();
+    final result = new VideoIdBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -43,13 +42,9 @@ class _$VideoItemSerializer implements StructuredSerializer<VideoItem> {
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'id':
-          result.id = serializers.deserialize(value,
+        case 'videoId':
+          result.videoId = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
-          break;
-        case 'snippet':
-          result.snippet.replace(serializers.deserialize(value,
-              specifiedType: const FullType(VideoSnippet)) as VideoSnippet);
           break;
       }
     }
@@ -86,10 +81,6 @@ class _$VideoSnippetSerializer implements StructuredSerializer<VideoSnippet> {
       'channelTitle',
       serializers.serialize(object.channelTitle,
           specifiedType: const FullType(String)),
-      'tags',
-      serializers.serialize(object.tags,
-          specifiedType:
-              const FullType(BuiltList, const [const FullType(String)])),
     ];
 
     return result;
@@ -130,11 +121,51 @@ class _$VideoSnippetSerializer implements StructuredSerializer<VideoSnippet> {
           result.channelTitle = serializers.deserialize(value,
               specifiedType: const FullType(String)) as String;
           break;
-        case 'tags':
-          result.tags.replace(serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(BuiltList, const [const FullType(String)]))
-              as BuiltList<Object>);
+      }
+    }
+
+    return result.build();
+  }
+}
+
+class _$VideoItemSerializer implements StructuredSerializer<VideoItem> {
+  @override
+  final Iterable<Type> types = const [VideoItem, _$VideoItem];
+  @override
+  final String wireName = 'VideoItem';
+
+  @override
+  Iterable<Object> serialize(Serializers serializers, VideoItem object,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = <Object>[
+      'id',
+      serializers.serialize(object.id, specifiedType: const FullType(VideoId)),
+      'videoSnippet',
+      serializers.serialize(object.videoSnippet,
+          specifiedType: const FullType(VideoSnippet)),
+    ];
+
+    return result;
+  }
+
+  @override
+  VideoItem deserialize(Serializers serializers, Iterable<Object> serialized,
+      {FullType specifiedType = FullType.unspecified}) {
+    final result = new VideoItemBuilder();
+
+    final iterator = serialized.iterator;
+    while (iterator.moveNext()) {
+      final key = iterator.current as String;
+      iterator.moveNext();
+      final dynamic value = iterator.current;
+      switch (key) {
+        case 'id':
+          result.id.replace(serializers.deserialize(value,
+              specifiedType: const FullType(VideoId)) as VideoId);
+          break;
+        case 'videoSnippet':
+          result.videoSnippet.replace(serializers.deserialize(value,
+              specifiedType: const FullType(VideoSnippet)) as VideoSnippet);
           break;
       }
     }
@@ -143,35 +174,36 @@ class _$VideoSnippetSerializer implements StructuredSerializer<VideoSnippet> {
   }
 }
 
-class _$YoutubeVideoResponseSerializer
-    implements StructuredSerializer<YoutubeVideoResponse> {
+class _$VideoSearchResultSerializer
+    implements StructuredSerializer<VideoSearchResult> {
   @override
-  final Iterable<Type> types = const [
-    YoutubeVideoResponse,
-    _$YoutubeVideoResponse
-  ];
+  final Iterable<Type> types = const [VideoSearchResult, _$VideoSearchResult];
   @override
-  final String wireName = 'YoutubeVideoResponse';
+  final String wireName = 'VideoSearchResult';
 
   @override
-  Iterable<Object> serialize(
-      Serializers serializers, YoutubeVideoResponse object,
+  Iterable<Object> serialize(Serializers serializers, VideoSearchResult object,
       {FullType specifiedType = FullType.unspecified}) {
     final result = <Object>[
-      'items',
-      serializers.serialize(object.items,
+      'videoItems',
+      serializers.serialize(object.videoItems,
           specifiedType:
               const FullType(BuiltList, const [const FullType(VideoItem)])),
     ];
-
+    if (object.nextPageToken != null) {
+      result
+        ..add('nextPageToken')
+        ..add(serializers.serialize(object.nextPageToken,
+            specifiedType: const FullType(String)));
+    }
     return result;
   }
 
   @override
-  YoutubeVideoResponse deserialize(
+  VideoSearchResult deserialize(
       Serializers serializers, Iterable<Object> serialized,
       {FullType specifiedType = FullType.unspecified}) {
-    final result = new YoutubeVideoResponseBuilder();
+    final result = new VideoSearchResultBuilder();
 
     final iterator = serialized.iterator;
     while (iterator.moveNext()) {
@@ -179,8 +211,12 @@ class _$YoutubeVideoResponseSerializer
       iterator.moveNext();
       final dynamic value = iterator.current;
       switch (key) {
-        case 'items':
-          result.items.replace(serializers.deserialize(value,
+        case 'nextPageToken':
+          result.nextPageToken = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
+          break;
+        case 'videoItems':
+          result.videoItems.replace(serializers.deserialize(value,
                   specifiedType: const FullType(
                       BuiltList, const [const FullType(VideoItem)]))
               as BuiltList<Object>);
@@ -192,103 +228,77 @@ class _$YoutubeVideoResponseSerializer
   }
 }
 
-class _$VideoItem extends VideoItem {
+class _$VideoId extends VideoId {
   @override
-  final String id;
-  @override
-  final VideoSnippet snippet;
+  final String videoId;
 
-  factory _$VideoItem([void Function(VideoItemBuilder) updates]) =>
-      (new VideoItemBuilder()..update(updates)).build();
+  factory _$VideoId([void Function(VideoIdBuilder) updates]) =>
+      (new VideoIdBuilder()..update(updates)).build();
 
-  _$VideoItem._({this.id, this.snippet}) : super._() {
-    if (id == null) {
-      throw new BuiltValueNullFieldError('VideoItem', 'id');
-    }
-    if (snippet == null) {
-      throw new BuiltValueNullFieldError('VideoItem', 'snippet');
+  _$VideoId._({this.videoId}) : super._() {
+    if (videoId == null) {
+      throw new BuiltValueNullFieldError('VideoId', 'videoId');
     }
   }
 
   @override
-  VideoItem rebuild(void Function(VideoItemBuilder) updates) =>
+  VideoId rebuild(void Function(VideoIdBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  VideoItemBuilder toBuilder() => new VideoItemBuilder()..replace(this);
+  VideoIdBuilder toBuilder() => new VideoIdBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is VideoItem && id == other.id && snippet == other.snippet;
+    return other is VideoId && videoId == other.videoId;
   }
 
   @override
   int get hashCode {
-    return $jf($jc($jc(0, id.hashCode), snippet.hashCode));
+    return $jf($jc(0, videoId.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('VideoItem')
-          ..add('id', id)
-          ..add('snippet', snippet))
+    return (newBuiltValueToStringHelper('VideoId')..add('videoId', videoId))
         .toString();
   }
 }
 
-class VideoItemBuilder implements Builder<VideoItem, VideoItemBuilder> {
-  _$VideoItem _$v;
+class VideoIdBuilder implements Builder<VideoId, VideoIdBuilder> {
+  _$VideoId _$v;
 
-  String _id;
-  String get id => _$this._id;
-  set id(String id) => _$this._id = id;
+  String _videoId;
+  String get videoId => _$this._videoId;
+  set videoId(String videoId) => _$this._videoId = videoId;
 
-  VideoSnippetBuilder _snippet;
-  VideoSnippetBuilder get snippet =>
-      _$this._snippet ??= new VideoSnippetBuilder();
-  set snippet(VideoSnippetBuilder snippet) => _$this._snippet = snippet;
+  VideoIdBuilder();
 
-  VideoItemBuilder();
-
-  VideoItemBuilder get _$this {
+  VideoIdBuilder get _$this {
     if (_$v != null) {
-      _id = _$v.id;
-      _snippet = _$v.snippet?.toBuilder();
+      _videoId = _$v.videoId;
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(VideoItem other) {
+  void replace(VideoId other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$VideoItem;
+    _$v = other as _$VideoId;
   }
 
   @override
-  void update(void Function(VideoItemBuilder) updates) {
+  void update(void Function(VideoIdBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$VideoItem build() {
-    _$VideoItem _$result;
-    try {
-      _$result = _$v ?? new _$VideoItem._(id: id, snippet: snippet.build());
-    } catch (_) {
-      String _$failedField;
-      try {
-        _$failedField = 'snippet';
-        snippet.build();
-      } catch (e) {
-        throw new BuiltValueNestedFieldError(
-            'VideoItem', _$failedField, e.toString());
-      }
-      rethrow;
-    }
+  _$VideoId build() {
+    final _$result = _$v ?? new _$VideoId._(videoId: videoId);
     replace(_$result);
     return _$result;
   }
@@ -307,8 +317,6 @@ class _$VideoSnippet extends VideoSnippet {
   final Thumbnails thumbnails;
   @override
   final String channelTitle;
-  @override
-  final BuiltList<String> tags;
 
   factory _$VideoSnippet([void Function(VideoSnippetBuilder) updates]) =>
       (new VideoSnippetBuilder()..update(updates)).build();
@@ -319,8 +327,7 @@ class _$VideoSnippet extends VideoSnippet {
       this.title,
       this.description,
       this.thumbnails,
-      this.channelTitle,
-      this.tags})
+      this.channelTitle})
       : super._() {
     if (publishedAt == null) {
       throw new BuiltValueNullFieldError('VideoSnippet', 'publishedAt');
@@ -340,9 +347,6 @@ class _$VideoSnippet extends VideoSnippet {
     if (channelTitle == null) {
       throw new BuiltValueNullFieldError('VideoSnippet', 'channelTitle');
     }
-    if (tags == null) {
-      throw new BuiltValueNullFieldError('VideoSnippet', 'tags');
-    }
   }
 
   @override
@@ -361,8 +365,7 @@ class _$VideoSnippet extends VideoSnippet {
         title == other.title &&
         description == other.description &&
         thumbnails == other.thumbnails &&
-        channelTitle == other.channelTitle &&
-        tags == other.tags;
+        channelTitle == other.channelTitle;
   }
 
   @override
@@ -370,13 +373,11 @@ class _$VideoSnippet extends VideoSnippet {
     return $jf($jc(
         $jc(
             $jc(
-                $jc(
-                    $jc($jc($jc(0, publishedAt.hashCode), channelId.hashCode),
-                        title.hashCode),
-                    description.hashCode),
-                thumbnails.hashCode),
-            channelTitle.hashCode),
-        tags.hashCode));
+                $jc($jc($jc(0, publishedAt.hashCode), channelId.hashCode),
+                    title.hashCode),
+                description.hashCode),
+            thumbnails.hashCode),
+        channelTitle.hashCode));
   }
 
   @override
@@ -387,8 +388,7 @@ class _$VideoSnippet extends VideoSnippet {
           ..add('title', title)
           ..add('description', description)
           ..add('thumbnails', thumbnails)
-          ..add('channelTitle', channelTitle)
-          ..add('tags', tags))
+          ..add('channelTitle', channelTitle))
         .toString();
   }
 }
@@ -423,10 +423,6 @@ class VideoSnippetBuilder
   String get channelTitle => _$this._channelTitle;
   set channelTitle(String channelTitle) => _$this._channelTitle = channelTitle;
 
-  ListBuilder<String> _tags;
-  ListBuilder<String> get tags => _$this._tags ??= new ListBuilder<String>();
-  set tags(ListBuilder<String> tags) => _$this._tags = tags;
-
   VideoSnippetBuilder();
 
   VideoSnippetBuilder get _$this {
@@ -437,7 +433,6 @@ class VideoSnippetBuilder
       _description = _$v.description;
       _thumbnails = _$v.thumbnails?.toBuilder();
       _channelTitle = _$v.channelTitle;
-      _tags = _$v.tags?.toBuilder();
       _$v = null;
     }
     return this;
@@ -467,16 +462,12 @@ class VideoSnippetBuilder
               title: title,
               description: description,
               thumbnails: thumbnails.build(),
-              channelTitle: channelTitle,
-              tags: tags.build());
+              channelTitle: channelTitle);
     } catch (_) {
       String _$failedField;
       try {
         _$failedField = 'thumbnails';
         thumbnails.build();
-
-        _$failedField = 'tags';
-        tags.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
             'VideoSnippet', _$failedField, e.toString());
@@ -488,93 +479,214 @@ class VideoSnippetBuilder
   }
 }
 
-class _$YoutubeVideoResponse extends YoutubeVideoResponse {
+class _$VideoItem extends VideoItem {
   @override
-  final BuiltList<VideoItem> items;
+  final VideoId id;
+  @override
+  final VideoSnippet videoSnippet;
 
-  factory _$YoutubeVideoResponse(
-          [void Function(YoutubeVideoResponseBuilder) updates]) =>
-      (new YoutubeVideoResponseBuilder()..update(updates)).build();
+  factory _$VideoItem([void Function(VideoItemBuilder) updates]) =>
+      (new VideoItemBuilder()..update(updates)).build();
 
-  _$YoutubeVideoResponse._({this.items}) : super._() {
-    if (items == null) {
-      throw new BuiltValueNullFieldError('YoutubeVideoResponse', 'items');
+  _$VideoItem._({this.id, this.videoSnippet}) : super._() {
+    if (id == null) {
+      throw new BuiltValueNullFieldError('VideoItem', 'id');
+    }
+    if (videoSnippet == null) {
+      throw new BuiltValueNullFieldError('VideoItem', 'videoSnippet');
     }
   }
 
   @override
-  YoutubeVideoResponse rebuild(
-          void Function(YoutubeVideoResponseBuilder) updates) =>
+  VideoItem rebuild(void Function(VideoItemBuilder) updates) =>
       (toBuilder()..update(updates)).build();
 
   @override
-  YoutubeVideoResponseBuilder toBuilder() =>
-      new YoutubeVideoResponseBuilder()..replace(this);
+  VideoItemBuilder toBuilder() => new VideoItemBuilder()..replace(this);
 
   @override
   bool operator ==(Object other) {
     if (identical(other, this)) return true;
-    return other is YoutubeVideoResponse && items == other.items;
+    return other is VideoItem &&
+        id == other.id &&
+        videoSnippet == other.videoSnippet;
   }
 
   @override
   int get hashCode {
-    return $jf($jc(0, items.hashCode));
+    return $jf($jc($jc(0, id.hashCode), videoSnippet.hashCode));
   }
 
   @override
   String toString() {
-    return (newBuiltValueToStringHelper('YoutubeVideoResponse')
-          ..add('items', items))
+    return (newBuiltValueToStringHelper('VideoItem')
+          ..add('id', id)
+          ..add('videoSnippet', videoSnippet))
         .toString();
   }
 }
 
-class YoutubeVideoResponseBuilder
-    implements Builder<YoutubeVideoResponse, YoutubeVideoResponseBuilder> {
-  _$YoutubeVideoResponse _$v;
+class VideoItemBuilder implements Builder<VideoItem, VideoItemBuilder> {
+  _$VideoItem _$v;
 
-  ListBuilder<VideoItem> _items;
-  ListBuilder<VideoItem> get items =>
-      _$this._items ??= new ListBuilder<VideoItem>();
-  set items(ListBuilder<VideoItem> items) => _$this._items = items;
+  VideoIdBuilder _id;
+  VideoIdBuilder get id => _$this._id ??= new VideoIdBuilder();
+  set id(VideoIdBuilder id) => _$this._id = id;
 
-  YoutubeVideoResponseBuilder();
+  VideoSnippetBuilder _videoSnippet;
+  VideoSnippetBuilder get videoSnippet =>
+      _$this._videoSnippet ??= new VideoSnippetBuilder();
+  set videoSnippet(VideoSnippetBuilder videoSnippet) =>
+      _$this._videoSnippet = videoSnippet;
 
-  YoutubeVideoResponseBuilder get _$this {
+  VideoItemBuilder();
+
+  VideoItemBuilder get _$this {
     if (_$v != null) {
-      _items = _$v.items?.toBuilder();
+      _id = _$v.id?.toBuilder();
+      _videoSnippet = _$v.videoSnippet?.toBuilder();
       _$v = null;
     }
     return this;
   }
 
   @override
-  void replace(YoutubeVideoResponse other) {
+  void replace(VideoItem other) {
     if (other == null) {
       throw new ArgumentError.notNull('other');
     }
-    _$v = other as _$YoutubeVideoResponse;
+    _$v = other as _$VideoItem;
   }
 
   @override
-  void update(void Function(YoutubeVideoResponseBuilder) updates) {
+  void update(void Function(VideoItemBuilder) updates) {
     if (updates != null) updates(this);
   }
 
   @override
-  _$YoutubeVideoResponse build() {
-    _$YoutubeVideoResponse _$result;
+  _$VideoItem build() {
+    _$VideoItem _$result;
     try {
-      _$result = _$v ?? new _$YoutubeVideoResponse._(items: items.build());
+      _$result = _$v ??
+          new _$VideoItem._(id: id.build(), videoSnippet: videoSnippet.build());
     } catch (_) {
       String _$failedField;
       try {
-        _$failedField = 'items';
-        items.build();
+        _$failedField = 'id';
+        id.build();
+        _$failedField = 'videoSnippet';
+        videoSnippet.build();
       } catch (e) {
         throw new BuiltValueNestedFieldError(
-            'YoutubeVideoResponse', _$failedField, e.toString());
+            'VideoItem', _$failedField, e.toString());
+      }
+      rethrow;
+    }
+    replace(_$result);
+    return _$result;
+  }
+}
+
+class _$VideoSearchResult extends VideoSearchResult {
+  @override
+  final String nextPageToken;
+  @override
+  final BuiltList<VideoItem> videoItems;
+
+  factory _$VideoSearchResult(
+          [void Function(VideoSearchResultBuilder) updates]) =>
+      (new VideoSearchResultBuilder()..update(updates)).build();
+
+  _$VideoSearchResult._({this.nextPageToken, this.videoItems}) : super._() {
+    if (videoItems == null) {
+      throw new BuiltValueNullFieldError('VideoSearchResult', 'videoItems');
+    }
+  }
+
+  @override
+  VideoSearchResult rebuild(void Function(VideoSearchResultBuilder) updates) =>
+      (toBuilder()..update(updates)).build();
+
+  @override
+  VideoSearchResultBuilder toBuilder() =>
+      new VideoSearchResultBuilder()..replace(this);
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(other, this)) return true;
+    return other is VideoSearchResult &&
+        nextPageToken == other.nextPageToken &&
+        videoItems == other.videoItems;
+  }
+
+  @override
+  int get hashCode {
+    return $jf($jc($jc(0, nextPageToken.hashCode), videoItems.hashCode));
+  }
+
+  @override
+  String toString() {
+    return (newBuiltValueToStringHelper('VideoSearchResult')
+          ..add('nextPageToken', nextPageToken)
+          ..add('videoItems', videoItems))
+        .toString();
+  }
+}
+
+class VideoSearchResultBuilder
+    implements Builder<VideoSearchResult, VideoSearchResultBuilder> {
+  _$VideoSearchResult _$v;
+
+  String _nextPageToken;
+  String get nextPageToken => _$this._nextPageToken;
+  set nextPageToken(String nextPageToken) =>
+      _$this._nextPageToken = nextPageToken;
+
+  ListBuilder<VideoItem> _videoItems;
+  ListBuilder<VideoItem> get videoItems =>
+      _$this._videoItems ??= new ListBuilder<VideoItem>();
+  set videoItems(ListBuilder<VideoItem> videoItems) =>
+      _$this._videoItems = videoItems;
+
+  VideoSearchResultBuilder();
+
+  VideoSearchResultBuilder get _$this {
+    if (_$v != null) {
+      _nextPageToken = _$v.nextPageToken;
+      _videoItems = _$v.videoItems?.toBuilder();
+      _$v = null;
+    }
+    return this;
+  }
+
+  @override
+  void replace(VideoSearchResult other) {
+    if (other == null) {
+      throw new ArgumentError.notNull('other');
+    }
+    _$v = other as _$VideoSearchResult;
+  }
+
+  @override
+  void update(void Function(VideoSearchResultBuilder) updates) {
+    if (updates != null) updates(this);
+  }
+
+  @override
+  _$VideoSearchResult build() {
+    _$VideoSearchResult _$result;
+    try {
+      _$result = _$v ??
+          new _$VideoSearchResult._(
+              nextPageToken: nextPageToken, videoItems: videoItems.build());
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'videoItems';
+        videoItems.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'VideoSearchResult', _$failedField, e.toString());
       }
       rethrow;
     }
