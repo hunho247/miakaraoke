@@ -12,7 +12,7 @@ import 'youtube_bloc.dart';
 import 'youtube_state.dart';
 
 class YoutubeScreen extends StatefulWidget {
-  final SearchItem videoItem;
+  final Favorite videoItem;
 
   const YoutubeScreen(this.videoItem);
 
@@ -23,13 +23,13 @@ class YoutubeScreen extends StatefulWidget {
 }
 
 class _YoutubeScreenState extends State<YoutubeScreen> {
-  final SearchItem videoItem;
+  final Favorite videoItem;
   final GlobalKey _globalKey = GlobalKey();
   YoutubePlayerController _controller;
 
   _YoutubeScreenState(this.videoItem) {
     _controller = YoutubePlayerController(
-      initialVideoId: videoItem.id.videoId,
+      initialVideoId: videoItem.videoId,
       flags: YoutubePlayerFlags(
         autoPlay: true,
         mute: false,
@@ -87,14 +87,7 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
   }
 
   _postFavorite() {
-    Favorite favorite = Favorite(
-      videoId: videoItem.id.videoId,
-      title: videoItem.snippet.title,
-      description: videoItem.snippet.description,
-      thumbnail: videoItem.snippet.thumbnails.high.url,
-      favCount: 1,
-    );
-    FavoriteBloc().add(PostingFavoriteEvent(favorite));
+    FavoriteBloc().add(PostingFavoriteEvent(videoItem));
   }
 
   _showPopupMenu() {

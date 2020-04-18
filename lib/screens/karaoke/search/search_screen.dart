@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:miakaraoke/model/firebase/favorite_model.dart';
 import 'package:miakaraoke/model/youtube/search_model.dart';
 import 'package:miakaraoke/screens/karaoke/youtube/youtube_screen.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
@@ -93,10 +94,17 @@ class _SearchScreenState extends State<SearchScreen> {
     return GestureDetector(
       child: _buildVideoListItemCard(videoItem.snippet),
       onTap: () {
+        Favorite favorite = Favorite(
+          videoId: videoItem.id.videoId,
+          title: videoItem.snippet.title,
+          description: videoItem.snippet.description,
+          thumbnail: videoItem.snippet.thumbnails.high.url,
+          favCount: 1,
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) {
-            return YoutubeScreen(videoItem);
+            return YoutubeScreen(favorite);
           }),
         );
       },

@@ -3,6 +3,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:miakaraoke/model/firebase/favorite_model.dart';
+import 'package:miakaraoke/model/youtube/search_model.dart';
+import 'package:miakaraoke/screens/karaoke/youtube/youtube_screen.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
 
 import 'favorite_bloc.dart';
@@ -80,7 +83,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  Widget _buildSlidableItem(var item) {
+  Widget _buildSlidableItem(DocumentSnapshot item) {
     return Padding(
       padding: const EdgeInsets.only(top: 8, left: 8, right: 8),
       child: ClipRRect(
@@ -98,7 +101,7 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
                 caption: 'Play',
                 color: Colors.blue,
                 icon: Icons.play_circle_outline,
-                onTap: () => {},
+                //onTap: _playFavKaraoke(item),
               ),
               IconSlideAction(
                 caption: 'Share',
@@ -124,10 +127,10 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
     );
   }
 
-  _buildCardItem(var item) {
+  _buildCardItem(DocumentSnapshot item) {
     return GestureDetector(
       onTap: () {
-        print("onTap called." + item.data['title']);
+        _playFavKaraoke(item);
       },
       child: Container(
         color: Colors.white,
@@ -177,6 +180,16 @@ class _FavoriteScreenState extends State<FavoriteScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  _playFavKaraoke(DocumentSnapshot item) {
+    Favorite videoItem = Favorite.fromJson(item.data);
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) {
+        return YoutubeScreen(videoItem);
+      }),
     );
   }
 }
