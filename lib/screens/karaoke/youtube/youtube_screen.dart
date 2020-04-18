@@ -5,6 +5,7 @@ import 'package:miakaraoke/model/youtube/search_model.dart';
 import 'package:miakaraoke/screens/karaoke/favorite/favorite_bloc.dart';
 import 'package:miakaraoke/screens/karaoke/favorite/favorite_event.dart';
 import 'package:miakaraoke/widget/centered_message.dart';
+import 'package:popup_menu/popup_menu.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import 'youtube_bloc.dart';
@@ -23,6 +24,7 @@ class YoutubeScreen extends StatefulWidget {
 
 class _YoutubeScreenState extends State<YoutubeScreen> {
   final SearchItem videoItem;
+  final GlobalKey _globalKey = GlobalKey();
   YoutubePlayerController _controller;
 
   _YoutubeScreenState(this.videoItem) {
@@ -43,6 +45,7 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    PopupMenu.context = context;
     return _buildScaffold();
   }
 
@@ -67,12 +70,11 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
           }
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _postFavorite();
-        },
-        child: Icon(Icons.favorite_border),
-        backgroundColor: Colors.red,
+      floatingActionButton: MaterialButton(
+        height: 45.0,
+        key: _globalKey,
+        onPressed: _showPopupMenu,
+        child: Text('Show Menu'),
       ),
     );
   }
@@ -93,5 +95,41 @@ class _YoutubeScreenState extends State<YoutubeScreen> {
       favCount: 1,
     );
     FavoriteBloc().add(PostingFavoriteEvent(favorite));
+  }
+
+  _showPopupMenu() {
+    _postFavorite();
+    PopupMenu popupMenu = PopupMenu(
+      //backgroundColor: Colors.teal,
+      //lineColor: Colors.tealAccent,
+      maxColumn: 2,
+      items: [
+        MenuItem(
+            title: 'Play',
+            image: Icon(
+              Icons.play_circle_outline,
+              color: Colors.white,
+            )),
+        MenuItem(
+            title: 'Delete',
+            image: Icon(
+              Icons.delete_outline,
+              color: Colors.white,
+            )),
+      ],
+      onClickMenu: _onClickPopupMenu,
+    );
+    popupMenu.show(widgetKey: _globalKey);
+  }
+
+  _onClickPopupMenu(MenuItemProvider item) {
+    print('Click menu -> ${item.menuTitle}');
+    switch (item.menuTitle) {
+      case 'Play':
+        break;
+      case 'Delete':
+        break;
+      default:
+    }
   }
 }

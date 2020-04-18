@@ -55,3 +55,21 @@ class PostingFavoriteEvent extends FavoriteEvent {
     }
   }
 }
+
+class DeletingFavoriteEvent extends FavoriteEvent {
+  final String videoId;
+
+  DeletingFavoriteEvent(this.videoId);
+
+  @override
+  Stream<FavoriteState> applyAsync(
+      {FavoriteState currentState, FavoriteBloc bloc}) async* {
+    try {
+      await FavoriteProvider.deleteFavKaraoke(videoId);
+      yield currentState;
+    } catch (_, stackTrace) {
+      print('$_ $stackTrace');
+      yield FailureFavoriteState(_?.toString());
+    }
+  }
+}

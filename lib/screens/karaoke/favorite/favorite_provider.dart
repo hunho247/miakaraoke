@@ -16,4 +16,8 @@ class FavoriteProvider {
         .document(favorite.videoId)
         .setData(favorite.toJson());
   }
+
+  static Future<void> deleteFavKaraoke(String videoId) async {
+    _ins.collection(_path).document(videoId).delete();
+  }
 }
